@@ -4,7 +4,7 @@ import Loadable from 'react-loadable';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { matchRoutes } from 'react-router-config';
-
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 // import our main App component
 import App from '../../src/App';
 import Routes from '../../src/routes';
@@ -49,17 +49,20 @@ export default (store) => (req, res, next) => {
 
         // render the app as a string
         const modules = [];
+        const sheet = new ServerStyleSheet()
         const html = ReactDOMServer.renderToString(
             <Loadable.Capture report={m => modules.push(m)}>
                 <StaticRouter location={req.baseUrl} context={routerContext}>
+                  <StyleSheetManager sheet={sheet.instance}>
                     <App/>
+                  </StyleSheetManager>
                 </StaticRouter>
             </Loadable.Capture>
         );
 
-
+        const styleTags = sheet.getStyleTags();
+        
         // get the stringified state
-        console.log(routerContext, '44243234')
         const reduxState = JSON.stringify(routerContext);
 
         // map required assets to script tags
@@ -76,6 +79,7 @@ export default (store) => (req, res, next) => {
                 .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
                 // write the string version of our state
                 .replace('__REDUX_STATE__={}', `__REDUX_STATE__=${reduxState}`)
+                .replace('__STYLES__', `${styleTags}`)
                 // append the extra js assets
                 .replace('</body>', extraChunks.join('') + '</body>')
                 // write the HTML header tags

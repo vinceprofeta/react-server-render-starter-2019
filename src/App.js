@@ -4,13 +4,19 @@ import Routes from './routes';
 import { renderRoutes } from 'react-router-config';
 import { withRouter } from 'react-router';
 import { Switch, NavLink } from 'react-router-dom';
-import './appps.css';
+import styled from 'styled-components';
+import AsyncComponent from './components/Test/Test'
+import './app.css';
 
-const AsyncComponent = Loadable({
-    loader: () => import(/* webpackChunkName: "myNamedChunk" */ './components/Test/Test'),
-    loading: () => <div>loading...</div>,
-    modules: ['Test'],
-});
+
+
+const Test = styled.h1`
+  font-size: 10px;
+  text-align: center;
+  color: palevioletred;
+`;
+
+
 
 class App extends Component {
     
@@ -22,9 +28,15 @@ class App extends Component {
                     <h1 className="App-title">Welcome to React</h1>
                 </header>
                 <div className="App-intro">
-                    <h2>Part 1: Async component</h2>
+                    <h2 className="fer">Part 1: Async component</h2>
                     <AsyncComponent />
 
+                    <Test>
+                      Hello World!
+                    </Test>
+
+
+                   
                     <h2>Part 3: React router</h2>
                     <nav>
                         <NavLink to="/" exact activeClassName="active">Home</NavLink>

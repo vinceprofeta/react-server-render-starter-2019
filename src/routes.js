@@ -20,7 +20,6 @@ const Routes = [
     exact: true,
     component: AsyncPageDefault,
     loadData: () => {
-      console.log('42343243')
       return '42343243'
     }
   },
@@ -28,7 +27,6 @@ const Routes = [
     path: '/posts',
     component: AsyncPageAnother,
     loadData: () => {
-      console.log('fsjkhfdshjksdfjhk')
       return 'fsjkhfdshjksdfjhk'
     }
   }
